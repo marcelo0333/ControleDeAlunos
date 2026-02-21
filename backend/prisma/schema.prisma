@@ -31,6 +31,7 @@ model Instituicao {
 model Curso {
   id        Int      @id @default(autoincrement())
   nome      String
+  codigo    String   
   instituicao  Instituicao @relation(fields: [instituicaoId], references: [id])
   instituicaoId Int
   dt_inicio DateTime
@@ -39,6 +40,8 @@ model Curso {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   alunos     Aluno[]
+
+  @@unique([codigo, instituicaoId])
 }
 
 model Aluno {
@@ -52,6 +55,7 @@ model Aluno {
   instituicaoId Int
   hash     String?
   file_path String?
+  url_callback String?
   status   StatusAluno @default(ATIVO)
   createdAt DateTime @default(now())
   deleted_at DateTime?

@@ -7,7 +7,7 @@ import { authenticateToken, AuthRequest } from '../middlewares/auth.middleware';
 
 const authRoutes = Router();
 
-authRoutes.post('/register', authenticateToken, async (req: AuthRequest, res) => {
+authRoutes.post('/register', async (req: AuthRequest, res) => {
     const { nome, email, senha } = req.body as CreateInstituicaoDTO;
     try {
         const response = await register({ nome, email, senha });

@@ -1,14 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "StatusAluno" AS ENUM ('ATIVO', 'CANCELADO');
-
--- DropTable
-DROP TABLE "User";
 
 -- CreateTable
 CREATE TABLE "Instituicao" (
@@ -26,6 +17,7 @@ CREATE TABLE "Instituicao" (
 CREATE TABLE "Curso" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
+    "codigo" TEXT NOT NULL,
     "instituicaoId" INTEGER NOT NULL,
     "dt_inicio" TIMESTAMP(3) NOT NULL,
     "dt_fim" TIMESTAMP(3) NOT NULL,
@@ -46,6 +38,7 @@ CREATE TABLE "Aluno" (
     "instituicaoId" INTEGER NOT NULL,
     "hash" TEXT,
     "file_path" TEXT,
+    "url_callback" TEXT,
     "status" "StatusAluno" NOT NULL DEFAULT 'ATIVO',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deleted_at" TIMESTAMP(3),
@@ -56,6 +49,9 @@ CREATE TABLE "Aluno" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Instituicao_email_key" ON "Instituicao"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Curso_codigo_instituicaoId_key" ON "Curso"("codigo", "instituicaoId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Aluno_cpf_key" ON "Aluno"("cpf");
