@@ -1,3 +1,4 @@
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
@@ -7,7 +8,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'login',
       component: LoginView
     },
@@ -17,19 +18,25 @@ const router = createRouter({
       component: RegisterView
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView,
+      path: '/',
+      component: DefaultLayout,
+      children: [
+        {
+          path: 'dashboard',
+          name: 'Home',
+          component: HomeView
+        },
+      ]
     }
   ],
 })
 
   router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/register']
+    const publicPages = ['/login', '/register']
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = localStorage.getItem('token')
     if (authRequired && !loggedIn) {
-      return next('/')
+      return next('/login')
     }
     next()
   })

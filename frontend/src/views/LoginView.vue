@@ -36,7 +36,7 @@ const handleLogin = async () => {
   try{
     await authStore.login(data.value.email, data.value.senha)
     console.log(data)
-    router.push('/home');
+    router.push('/dashboard');
   }catch(err){
     erro.value = 'email ou senha invalido';
     console.error(err);
