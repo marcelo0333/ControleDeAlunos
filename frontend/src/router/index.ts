@@ -1,5 +1,6 @@
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -9,6 +10,11 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
     },
     {
       path: '/home',
@@ -23,7 +29,7 @@ const router = createRouter({
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = localStorage.getItem('token')
     if (authRequired && !loggedIn) {
-      return next('/login')
+      return next('/')
     }
     next()
   })
