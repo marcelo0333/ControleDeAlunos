@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth.store';
-import ListAluno from './ui/ListAluno.vue';
+import ListAluno from './ListAluno.vue';
 
 const authStore = useAuthStore();
 console.log(authStore.instituicao)

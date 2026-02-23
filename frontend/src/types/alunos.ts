@@ -8,8 +8,9 @@ export type CursoDTO = {
 
 export type AlunoDTO = {
     id: number;
-    cpf: string;
     nome: string;
+    cpf: string;
+    dt_nascimento: Date;
     curso: CursoDTO;
     instituicaoId: number;
     hash?: string;
