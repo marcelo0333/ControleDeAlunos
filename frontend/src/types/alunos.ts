@@ -32,9 +32,17 @@ export type CreateAlunoDTO = {
 
 export type UpdateAlunoDTO = {
     nome?: string;
-    dt_nascimento?: Date;
+    dt_nascimento?: string;
 }
 
 export type ImportAlunoDTO = {
     alunos: CreateAlunoDTO[];
+}
+export interface AlunoPublicoDTO {
+    nome: string;
+    cpf: string;
+    curso: CursoDTO;
+    hash: string;
+    validation_code: string;
+    download: string;
 }

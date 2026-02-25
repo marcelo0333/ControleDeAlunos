@@ -20,21 +20,33 @@
       <p><strong>Docente:</strong> {{ props.aluno?.curso.docente }}</p>
     </div>
     <div class="flex justify-center mt-4">
-    <button @click="$emit('close')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">Gerar Hash</button>
+      <div v-if="!props.aluno?.hash ">
+        <button @click="$emit('generate', aluno)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">Gerar Certificado</button>
+      </div>
+      <div v-else>
+        <a v-if="certificadoUrl" :href="certificadoUrl" target="_blank" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Visualizar Certificado</a>
+      </div>
     </div>
   </AppModal>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import AppModal from './ui/AppModal.vue';
 import type { AlunoDTO } from '@/types/alunos';
 
-defineEmits(['close']);
+defineEmits(['close',  'generate']);
 const props = defineProps<{
   open: boolean;
   aluno: AlunoDTO | null;
 }>();
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
+const certificadoUrl = computed(() => {
+  if (!props.aluno?.hash) return null;
+  return `${apiUrl}/certificados/${props.aluno.hash}`;
+});
 </script>
 
 <style scoped>

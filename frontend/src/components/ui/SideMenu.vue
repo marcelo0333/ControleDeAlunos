@@ -1,20 +1,20 @@
 <template>
   <nav class="fixed top-0 left-0 w-full bg-gray-600 text-white shadow-md z-40">
-    <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-      <span class="font-bold text-lg">Controle de Alunos</span>
-      <div class="flex items-center gap-6">
+    <div class="mx-auto px-6 flex items-center justify-between w-full">
+      <span class="font-bold text-lg ml-1">Controle de Alunos</span>
+      <div class="flex gap-6 justify-center align-middle items-center">
         <RouterLink to="/dashboard" class="hover:text-gray-300  hover:bg-gray-600 transition rounded-lg px-2"
           >Dashboard</RouterLink
         >
-        <RouterLink to="/alunos" class="hover:text-gray-300  hover:bg-gray-600 transition rounded-lg px-2"
-          >Alunos</RouterLink
-        >
+        <button @click="abrirModal" class="hover:text-gray-300  hover:bg-gray-600 transition rounded-lg px-2"
+          >Importar alunos</button>
+          <ModalUploadAlunos :open="modalAberto" @close="fecharModal" />
         <RouterLink to="/cursos" class="hover:text-gray-300  hover:bg-gray-600 transition rounded-lg px-2"
           >Cursos</RouterLink
         >
       </div>
       <div
-        class="flex items-center gap-2 border-l border-gray-400 p-4 hover:bg-gray-500 transition rounded-l-lg cursor-pointer z-50 -mr-4"
+        class="flex items-center gap-2 border-l border-gray-400 p-4 hover:bg-gray-500 transition rounded-l-lg cursor-pointer z-50 "
         @click="menuUser = !menuUser"
       >
         {{ authStore.instituicao?.nome }}
@@ -53,10 +53,19 @@ import { mdiAccount } from "@mdi/js";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { ref } from "vue";
 import router from "@/router";
+import type { AlunoDTO } from "@/types/alunos";
+import ModalUploadAlunos from "../ModalUploadAlunos.vue";
 
 const menuUser = ref(false);
-
+const modalAberto = ref(false);
 const authStore = useAuthStore();
+
+const abrirModal = () => {
+  modalAberto.value = true;
+}
+const fecharModal = () => {
+  modalAberto.value = false;
+}
 
 const goToProfile = () => {
   console.log("Ir para perfil");
