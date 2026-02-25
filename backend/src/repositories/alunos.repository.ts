@@ -39,6 +39,14 @@ export const findAlunoByHash = async (hash: string) => {
     return aluno
 }
 
+export const validateAlunoByHash = async (hash: string) => {
+    const aluno = await prisma.aluno.findFirst({
+        where: {hash, status: {not: 'CANCELADO'}, deleted_at: null},
+        include: {curso: true}
+    })
+    return aluno
+}
+
 export const createAluno = async (data: {nome: string, cpf: string, dt_nascimento: Date, url_callback: string, instituicaoId: number, cursoId: number}) => {
     try {
         const dtNasc = new Date(data.dt_nascimento).toISOString();
@@ -70,7 +78,7 @@ export const deleteAluno = async (id: number, instituicaoId: number) => {
     try {
         const deletedAluno = await prisma.aluno.update({
             where: { id, instituicaoId, status: 'ATIVO' },
-            data: { status: 'CANCELADO', deleted_at: new Date() },
+            data: { status: 'CANCELADO'},
         });
         return deletedAluno;
     } catch (error) {

@@ -6,21 +6,25 @@ import fs from 'fs'
 
 
 export const gerarXml = (aluno: AlunoDTO): string => {
-    const xml = create({version: 1.0, encoding: 'UTF-8'})
+    const xml = create({version: '1.0', encoding: 'UTF-8'})
     .ele('certificado')
-    .ele('aluno')
-        .ele('nome').txt(aluno.nome).up()
-        .ele('cpf').txt(aluno.cpf).up()
-        .ele('hash').txt(aluno.hash || 'sem hash').up()
-    .up()
-    .ele('curso')
-        .ele('codigo').txt(aluno.curso.codigo)
-        .ele('nome').txt(aluno.curso.nome)
-        .ele('docente').txt(aluno.curso.docente)
-        .ele('dt_inicio').txt(aluno.curso.dt_inicio.toISOString()).up()
-        .ele('dt_fim').txt(aluno.curso.dt_fim.toISOString()).up()
-    .up()
-    .ele('validation_code').txt(aluno.hash || 'sem validation_code').up()
+
+        .ele('aluno')
+            .ele('nome').txt(aluno.nome).up()
+            .ele('cpf').txt(aluno.cpf).up()
+            .ele('hash').txt(aluno.hash || 'sem hash').up()
+        .up()
+
+        .ele('curso')
+            .ele('codigo').txt(aluno.curso.codigo).up()
+            .ele('nome').txt(aluno.curso.nome).up()
+            .ele('docente').txt(aluno.curso.docente).up()
+            .ele('dt_inicio').txt(aluno.curso.dt_inicio.toISOString()).up()
+            .ele('dt_fim').txt(aluno.curso.dt_fim.toISOString()).up()
+        .up()
+
+        .ele('validation_code').txt(aluno.validation_code || 'sem validation_code').up()
+
     .up()
     .end({prettyPrint: true});
 
@@ -34,9 +38,20 @@ export const salvarXml = (xml: string, hash: string): string =>{
         fs.mkdirSync(dir, { recursive: true });
     }
 
-    const filePath = path.join(dir, `${hash}.xml`);
+    const filePath = `${hash}.xml`;
     
-    fs.writeFileSync(filePath, xml, 'utf-8');
+    fs.writeFileSync(path.join(dir, filePath), xml, 'utf-8');
 
+    return filePath;
+}
+
+export const getXmlFilePath = (aluno: any): string => {
+    const fileName = path.basename(aluno.file_path!);
+    const filePath = path.join(process.cwd(), 'certificados', fileName);
+    console.log('Caminho do arquivo:', filePath);
+    if(!fs.existsSync(filePath)) {
+        console.error(`Arquivo XML não encontrado: ${filePath}`);
+        throw new Error('Arquivo XML não encontrado');
+    }
     return filePath;
 }

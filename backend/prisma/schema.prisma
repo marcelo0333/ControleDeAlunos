@@ -55,7 +55,7 @@ model Aluno {
   instituicaoId Int
   hash     String?
   file_path String?
-  url_callback String?
+  url_callback String
   validation_code String?
   status   StatusAluno @default(ATIVO)
   createdAt DateTime @default(now())

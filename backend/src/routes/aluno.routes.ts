@@ -1,7 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import * as service from '../services/aluno.service'
-import { ImportAlunoDTO, UpdateAlunoDTO } from '../dtos/alunos';
+import { AlunoPublicoDTO, ImportAlunoDTO, UpdateAlunoDTO } from '../dtos/alunos';
 
 const alunosRoutes = Router();
 
@@ -45,12 +45,13 @@ alunosRoutes.delete('/:id', async(req: AuthRequest, res: Response) =>{
     })
 })
 
-alunosRoutes.patch('/:id/gerar-hash', async(req: AuthRequest, res: Response) =>{
+alunosRoutes.patch('/:id/gerar-certificado', async(req: AuthRequest, res: Response) =>{
     const resAluno = await service.gerarCertificadoAluno(Number(req.params.id), req.instituicao!.id);
     res.status(201).json({
         message: "Armazenado com sucesso",
         data: resAluno
     });
 })
+
 
 export default alunosRoutes;

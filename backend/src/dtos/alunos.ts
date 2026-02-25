@@ -15,11 +15,19 @@ export interface AlunoDTO {
     hash?: string;
     file_path?: string;
     url_callback?: string;
+    validation_code?: string;
     status: 'ATIVO' | 'INATIVO';
     createdAt: Date;
     deleted_at?: Date | null;
 }
-
+export interface AlunoPublicoDTO {
+    nome: string;
+    cpf: string;
+    curso: CursoDTO;
+    hash: string;
+    validation_code: string;
+    download: string;
+}
 export interface CreateAlunoDTO {
     nome: string;
     cpf: string;
@@ -37,3 +45,12 @@ export interface UpdateAlunoDTO {
 export interface ImportAlunoDTO {
     alunos: CreateAlunoDTO[];
 }
+
+export interface AlunoWebHookDTO {
+    nome: string;
+    cpf: string;
+    hash: string;
+    validation_code: string;
+    url_callback: string;
+}
+

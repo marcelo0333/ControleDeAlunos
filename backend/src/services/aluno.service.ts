@@ -1,11 +1,12 @@
 import { cp } from 'node:fs';
-import { AlunoDTO, CreateAlunoDTO, ImportAlunoDTO, UpdateAlunoDTO } from '../dtos/alunos';
+import { AlunoDTO, CreateAlunoDTO, ImportAlunoDTO, UpdateAlunoDTO, AlunoWebHookDTO } from '../dtos/alunos';
 import * as alunoRepo from '../repositories/alunos.repository';
 import * as cursoRepo from '../repositories/curso.repository';
 import { validarAluno } from '../schemas/alunos.schemas';
 import validarCpf from '../utils/cpf.utils';
 import { gerarHash } from './hash.service';
 import { gerarXml, salvarXml } from './xml.service';
+import { callWebhook } from './webhook.service';
 
 export const listar = async (instituicaoId: number) => {
     return alunoRepo.findAllAlunos(instituicaoId);
@@ -15,8 +16,14 @@ export const buscarPorId = async (id: number, instituicaoId: number) => {
     return alunoRepo.findAlunoById(id, instituicaoId);
 }
 
+export const validarHash = async (hash: string) => {
+    return alunoRepo.validateAlunoByHash(hash);
+}
+
+
+
 export const criar = async (data: CreateAlunoDTO) => {
-    const curso = await cursoRepo.findOrCreateCurso(data.curso.nome, data.curso.codigo, data.instituicaoId, data.curso.docente, data.curso.dt_inicio, data.curso.dt_fim);
+    const curso = await cursoRepo.createCurso(data.curso.nome, data.curso.codigo, data.instituicaoId, data.curso.docente, data.curso.dt_inicio, data.curso.dt_fim);
 
     return alunoRepo.createAluno({ ...data, cursoId: curso.id });
 }
@@ -40,7 +47,7 @@ export const importar = async (data: ImportAlunoDTO, instituicaoId: number) => {
             continue;
         }
         try{
-            const curso = await cursoRepo.findOrCreateCurso(
+            const curso = await cursoRepo.createCurso(
                 alunoData.curso.nome,
                 alunoData.curso.codigo, 
                 instituicaoId, 
@@ -78,6 +85,17 @@ export const gerarCertificadoAluno = async (id: number, instituicaoId: number) =
     
     await alunoRepo.generateHashAluno(id, instituicaoId, hash)
     const aluno = await gerarXmlAluno(id, instituicaoId);
+    try{
+        await callWebhook({
+            nome: alunoOptional.nome,
+            cpf: alunoOptional.cpf,
+            hash,
+            validation_code: hash.substring(0, 8).toUpperCase(),
+            url_callback: alunoOptional.url_callback,
+        })
+    }catch(error){
+
+    }
     return aluno
 }
 
