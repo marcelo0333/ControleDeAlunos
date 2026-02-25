@@ -56,6 +56,7 @@ model Aluno {
   hash     String?
   file_path String?
   url_callback String?
+  validation_code String?
   status   StatusAluno @default(ATIVO)
   createdAt DateTime @default(now())
   deleted_at DateTime?

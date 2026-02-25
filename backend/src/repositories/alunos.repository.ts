@@ -1,4 +1,4 @@
-import { CreateAlunoDTO, UpdateAlunoDTO } from "../dtos/alunos";
+import { UpdateAlunoDTO } from "../dtos/alunos";
 import { prisma } from "../lib/db";
 
 export const findAllAlunos = async (instituicaoId: number) => {
@@ -30,6 +30,13 @@ export const findAlunoById = async (id: number, instituicaoId: number) => {
         throw new Error('An error occurred while fetching the aluno by id.');
 
     }
+}
+
+export const findAlunoByHash = async (hash: string) => {
+    const aluno = await prisma.aluno.findFirst({
+        where: {hash},
+    })
+    return aluno
 }
 
 export const createAluno = async (data: {nome: string, cpf: string, dt_nascimento: Date, url_callback: string, instituicaoId: number, cursoId: number}) => {
@@ -69,5 +76,32 @@ export const deleteAluno = async (id: number, instituicaoId: number) => {
     } catch (error) {
         console.error('Error deleting aluno:', error);
         throw new Error('An error occurred while deleting the aluno.');
+    }
+};
+
+export const generateHashAluno = async (id: number, instituicaoId: number, hash: string) =>{
+    try {
+        const validationCode = hash.substring(0,8).toUpperCase() 
+        const aluno = await prisma.aluno.update({
+            where: {id, instituicaoId, status: 'ATIVO'},
+            data: {hash: hash, validation_code: validationCode},
+        });
+        return aluno;
+    } catch (error) {
+        console.error('Error generating hash', error);
+        throw new Error('An error occurred while creating an hash to aluno.')
+    }
+}
+
+export const generateXmlAluno = async (id: number, instituicaoId: number, file_path: string) => {
+    try {
+        const updatedAluno = await prisma.aluno.update({
+            where: { id, instituicaoId, status: 'ATIVO' },
+            data: { file_path},
+        });
+        return updatedAluno;
+    } catch (error) {
+        console.error('Error updating aluno:', error);
+        throw new Error('An error occurred while updating the aluno.');
     }
 };

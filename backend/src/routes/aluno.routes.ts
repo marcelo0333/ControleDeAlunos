@@ -45,4 +45,12 @@ alunosRoutes.delete('/:id', async(req: AuthRequest, res: Response) =>{
     })
 })
 
+alunosRoutes.patch('/:id/gerar-hash', async(req: AuthRequest, res: Response) =>{
+    const resAluno = await service.gerarCertificadoAluno(Number(req.params.id), req.instituicao!.id);
+    res.status(201).json({
+        message: "Armazenado com sucesso",
+        data: resAluno
+    });
+})
+
 export default alunosRoutes;
