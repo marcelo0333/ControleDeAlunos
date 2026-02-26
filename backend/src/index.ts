@@ -10,5 +10,4 @@ const router = express.Router();
 router.use('/instituicao', authRoutes);
 router.use('/alunos', authenticateToken, alunoRoutes);
 router.use('', certificadoRoutes);
-
 export default router;
