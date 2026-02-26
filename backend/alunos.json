@@ -1,0 +1,43 @@
+{
+  "alunos": [
+{
+  "nome": "Mariana Teixeira Braga",
+  "cpf": "188.508.466-81",
+  "dt_nascimento": "2002-05-17",
+  "url_callback": "https://webhook.site/4f979a97-0e70-42a1-94be-94cfd2286810",
+  "curso": {
+    "nome": "Pedagogia",
+    "codigo": "PED2024",
+    "dt_inicio": "2024-01-01",
+    "dt_fim": "2024-12-01",
+    "docente": "Prof. Sandra Lima"
+  }
+},
+{
+  "nome": "Diego Ramos Cavalcante",
+  "cpf": "354.515.520-02",
+  "dt_nascimento": "2000-08-23",
+  "url_callback": "https://webhook.site/4f979a97-0e70-42a1-94be-94cfd2286810",
+  "curso": {
+    "nome": "Contabilidade",
+    "codigo": "CONT2024",
+    "dt_inicio": "2024-02-01",
+    "dt_fim": "2024-12-15",
+    "docente": "Prof. Henrique Bastos"
+  }
+},
+{
+  "nome": "Isabela Cunha Freitas",
+  "cpf": "820.130.014-95",
+  "dt_nascimento": "2003-01-09",
+  "url_callback": "https://webhook.site/4f979a97-0e70-42a1-94be-94cfd2286810",
+  "curso": {
+    "nome": "Arquitetura",
+    "codigo": "ARQ2024",
+    "dt_inicio": "2024-03-01",
+    "dt_fim": "2024-12-18",
+    "docente": "Prof. Renata Oliveira"
+  }
+}
+  ]
+}
