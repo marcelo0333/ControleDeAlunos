@@ -23,8 +23,11 @@ import { useAuthStore } from '@/stores/auth.store';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AppButton from '@/components/ui/AppButton.vue';
+import { useToast } from 'vue-toastification';
+import axios from 'axios';
 
 const router = useRouter();
+const toast = useToast();
 
 const authStore = useAuthStore();
 const data = ref({nome: '', email: '', senha: ''})
@@ -37,10 +40,14 @@ const handleRegister = async () => {
   try{
     await authStore.register(data.value.nome, data.value.email, data.value.senha)
     console.log(data)
-    router.push('/home');
+    router.push('/dashboard');
   }catch(err){
-    erro.value = 'Erro ao registrar usuário';
-    console.error(err);
+    if (axios.isAxiosError(err)) {
+      erro.value = err.response?.data?.error
+    } else {
+      erro.value = 'Erro ao registrar usuário. Verifique os dados e tente novamente.'
+    }
+    toast.error('Erro ao registrar usuário. Verifique os dados e tente novamente.');
   }finally{
     carregando.value = false
   }

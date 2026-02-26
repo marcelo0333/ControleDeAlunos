@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('auth', () => {
     instituicao.value = data.instituicao
     localStorage.setItem('token', data.token)
     localStorage.setItem('instituicao', JSON.stringify(data.instituicao))
+    return data
+
   }
 
  const register = async(nome: string, email: string, senha: string ) => {
@@ -19,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
     instituicao.value = data.instituicao
     localStorage.setItem('token', data.token)
     localStorage.setItem('instituicao', JSON.stringify(data.instituicao))
+    return data
   }
 
   const instituicao = ref<{ id: number; nome: string; email: string } | null>

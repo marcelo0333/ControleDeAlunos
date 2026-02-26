@@ -73,17 +73,26 @@ import {
   getAlunos,
 } from "@/services/alunos/aluno.service";
 import type { AlunoDTO } from "@/types/alunos";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import ModalAluno from "./ModalAluno.vue";
 import ModalEditarAluno from "./ModalEditarAluno.vue";
 import { useToast } from "vue-toastification";
+import { useAlunosStore } from "@/stores/aluno.store";
 
 const toast = useToast();
 const alunos = ref([] as AlunoDTO[]);
 const alunoSelecionado = ref(null as AlunoDTO | null);
 
+
+
 const modalAberto = ref(false);
 const modalEdicaoAberto = ref(false);
+
+const alunosStore = useAlunosStore()
+
+watch(() => alunosStore.refreshKey, async () => {
+  alunos.value = await getAlunos()
+},{ immediate: false });
 
 onMounted(async () => {
   alunos.value = await getAlunos();

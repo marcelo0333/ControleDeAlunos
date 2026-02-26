@@ -1,6 +1,6 @@
 <template>
   <AppModal :open="props.open" title="Importar alunos" @close="$emit('close')">
-    <div class="flex justify-center mt-4">
+    <div class="flex justify-center mt-4 overflow-scroll">
       <div class="space-y-4">
         <input
           ref="fileInput"
@@ -83,6 +83,7 @@ import AppModal from './ui/AppModal.vue';
 import type { CreateAlunoDTO } from '@/types/alunos';
 import { importarAlunos } from '@/services/alunos/aluno.service';
 import { useToast } from 'vue-toastification';
+import { useAlunosStore } from '@/stores/aluno.store';
 
 defineEmits(['close']);
 const props = defineProps<{
@@ -93,6 +94,8 @@ const alunosPreview = ref<CreateAlunoDTO[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 const alunosResponse = ref<any[]>([])
 const toast = useToast();
+const alunosStore = useAlunosStore();
+
 const handleFile = (event: Event) => {
     const input = event.target as HTMLInputElement
     const file = input.files?.[0]
@@ -118,6 +121,9 @@ const importar = async () => {
   try {
     const response = await importarAlunos(alunosPreview.value)
     alunosResponse.value = response.data
+    alunosStore.triggerRefresh()
+    console.log(response.data)
+    toast.success('Importação dos alunos validos concluída!')
   } catch (error) {
     toast.info('erro')
     console.log(error)

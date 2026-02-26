@@ -1,12 +1,12 @@
 <template>
   <div>
-    <SideMenu />
+    <Navbar />
     <router-view />
   </div>
 </template>
 
 <script setup lang="ts">
-import SideMenu from '@/components/ui/SideMenu.vue';
+import Navbar from '@/components/ui/Navbar.vue';
 import { RouterView } from 'vue-router';
 
 </script>
