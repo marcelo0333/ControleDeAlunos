@@ -1,7 +1,7 @@
 import { AlunoWebHookDTO } from "../dtos/alunos";
 
 export const callWebhook = async (aluno: AlunoWebHookDTO) => {
-    const url_consulta = `${process.env.HOST}/validar/${aluno.hash}`;
+    const url_consulta = `${process.env.FRONTEND_URL}/validar/${aluno.hash}`;
 
     await fetch(aluno.url_callback,{
         method: 'POST',

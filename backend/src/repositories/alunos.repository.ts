@@ -12,7 +12,7 @@ export const findAllAlunos = async (instituicaoId: number) => {
         return alunos;
     } catch (error) {
         console.error('Error fetching alunos:', error);
-        throw new Error('An error occurred while fetching alunos.');
+        throw new Error('Um erro ocorreu ao buscar os alunos.');
     }
 };
 
@@ -27,7 +27,7 @@ export const findAlunoById = async (id: number, instituicaoId: number) => {
         return aluno;
     } catch (error) {
         console.error('Error fetching aluno by id:', error);
-        throw new Error('An error occurred while fetching the aluno by id.');
+        throw new Error('Um erro ocorreu ao buscar o aluno pelo id.');
 
     }
 }
@@ -54,8 +54,10 @@ export const createAluno = async (data: {nome: string, cpf: string, dt_nasciment
         const newAluno = await prisma.aluno.create({ data });
         return newAluno;
     } catch (error) {
-        console.error('Error creating aluno:', error);
-        throw new Error('An error occurred while creating the aluno.');
+         if ((error as any).code === 'P2002') {
+            throw new Error('CPF já cadastrado nesta instituição')
+        }
+        throw new Error('Um erro ocorreu ao criar o aluno.');
     }
 };
 
@@ -70,7 +72,7 @@ export const updateAluno = async (id: number, instituicaoId: number, data: Parti
         return updatedAluno;
     } catch (error) {
         console.error('Error updating aluno:', error);
-        throw new Error('An error occurred while updating the aluno.');
+        throw new Error('Um erro ocorreu ao atualizar o aluno.');
     }
 };
 
@@ -83,7 +85,7 @@ export const deleteAluno = async (id: number, instituicaoId: number) => {
         return deletedAluno;
     } catch (error) {
         console.error('Error deleting aluno:', error);
-        throw new Error('An error occurred while deleting the aluno.');
+        throw new Error('Um erro ocorreu ao cancelar o aluno.');
     }
 };
 
@@ -97,7 +99,7 @@ export const generateHashAluno = async (id: number, instituicaoId: number, hash:
         return aluno;
     } catch (error) {
         console.error('Error generating hash', error);
-        throw new Error('An error occurred while creating an hash to aluno.')
+        throw new Error('Um erro ocorreu ao gerar o hash do aluno.')
     }
 }
 
@@ -110,6 +112,6 @@ export const generateXmlAluno = async (id: number, instituicaoId: number, file_p
         return updatedAluno;
     } catch (error) {
         console.error('Error updating aluno:', error);
-        throw new Error('An error occurred while updating the aluno.');
+        throw new Error('Um erro ocorreu ao atualizar o aluno.');
     }
 };

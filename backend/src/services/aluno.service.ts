@@ -46,6 +46,7 @@ export const importar = async (data: ImportAlunoDTO, instituicaoId: number) => {
             })
             continue;
         }
+        
         try{
             const curso = await cursoRepo.createCurso(
                 alunoData.curso.nome,

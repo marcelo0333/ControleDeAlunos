@@ -18,7 +18,7 @@ export const createCurso = async (nome: string, codigo: string, instituicaoId: n
         });
         return curso;
     } catch (error) {
-        console.error('Error finding or creating curso:', error);
-        throw new Error('An error occurred while finding or creating the curso.');
+        console.error('Um erro ocorreu ao criar o curso:', error);
+        throw new Error('Um erro ocorreu ao criar o curso');
     }
 };

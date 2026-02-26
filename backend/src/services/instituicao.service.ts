@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export const register = async (instituicaoData: CreateInstituicaoDTO) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(instituicaoData.email)) {
+        throw new Error('Email inválido')
+    }
     const exist = await findByEmail(instituicaoData.email);
     if (exist) {
         throw new Error('Email already in use');
