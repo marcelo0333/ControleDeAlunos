@@ -8,6 +8,9 @@ export const findAllAlunos = async (instituicaoId: number) => {
             include: {
                 curso: true,
             },
+            orderBy: {
+                nome: 'asc',
+            },
         });
         return alunos;
     } catch (error) {
