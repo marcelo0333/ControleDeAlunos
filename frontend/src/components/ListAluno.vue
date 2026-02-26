@@ -121,6 +121,7 @@ const gerarCertificadoAluno = async (aluno: AlunoDTO) => {
     const response = await gerarCertificado(aluno.id);
     toast.success(response.data.message);
     alunos.value = await getAlunos();
+    fecharModal();
   } catch (error) {
     toast.error("Error ao gerar certificado: " + error);
   }
